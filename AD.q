@@ -100,9 +100,8 @@ backward:{[nodes]
   grads: n#0f;  / Initialize all gradients to 0
   grads[n-1]: 1f;  / Output gradient is 1
   
-  / Traverse nodes backward
-  i: n-1;
-  while[i >= 0;
+  / Function to process one node and update gradients
+  processNode:{[nodes; grads; i]
     node: nodes[i];
     grad: grads[i];
     
@@ -139,10 +138,11 @@ backward:{[nodes]
       grads[rightIdx]: grads[rightIdx] + localGrads 1;
     ];
     
-    i: i - 1;
-  ];
+    grads
+  };
   
-  grads
+  / Traverse nodes backward using over operator
+  processNode[nodes;]/[grads; reverse til n]
   };
 
 / Main AD function
